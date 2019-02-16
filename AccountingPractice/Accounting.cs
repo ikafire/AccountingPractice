@@ -25,29 +25,22 @@ namespace AccountingPractice
             var list = new List<MonthlyRate>();
             while (start <= end)
             {
-                if (ToYearMonth(start) != ToYearMonth(end))
-                {
-                    var tempEnd = new DateTime(start.Year, start.Month,
-                        DateTime.DaysInMonth(start.Year, start.Month));
-                    list.Add(new MonthlyRate()
-                    {
-                        YearMonth = ToYearMonth(start),
-                        Rate = GetRate(start, tempEnd),
-                    });
-                    start = tempEnd.AddDays(1);
-                }
-                else
-                {
-                    list.Add(new MonthlyRate
-                    {
-                        YearMonth = ToYearMonth(start),
-                        Rate = GetRate(start, end),
-                    });
-                    break;
-                }
+                var tempEnd = NotInSameMonth(start, end) ? LastDayOfMonth(start) : end;
+                list.Add(new MonthlyRate() { YearMonth = start.ToString("yyyyMM"), Rate = GetRate(start, tempEnd) });
+                start = tempEnd.AddDays(1);
             }
 
             return list;
+        }
+
+        private static DateTime LastDayOfMonth(DateTime start)
+        {
+            return new DateTime(start.Year, start.Month, DateTime.DaysInMonth(start.Year, start.Month));
+        }
+
+        private static bool NotInSameMonth(DateTime start, DateTime end)
+        {
+            return start.ToString("yyyyMM") != end.ToString("yyyyMM");
         }
 
         private double CalculateBudget(MonthlyRate monthlyRate, List<Budget> budgets)
