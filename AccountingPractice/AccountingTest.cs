@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using FluentAssertions;
 using Moq;
 using Xunit;
@@ -56,7 +55,7 @@ namespace AccountingPractice
         }
 
         [Fact]
-        public void MutilDaysInOneMonth()
+        public void MutilpleDaysInOneMonth()
         {
             GivenDatabaseHasData(new List<Budget>
             {
@@ -71,7 +70,7 @@ namespace AccountingPractice
         }
 
         [Fact]
-        public void MutilDaysInTwoMonth()
+        public void TwoMonths()
         {
             GivenDatabaseHasData(new List<Budget>
             {
@@ -102,7 +101,7 @@ namespace AccountingPractice
         }
 
         [Fact]
-        public void TwoMonthWithOneMonthNoData()
+        public void TwoMonthsWithOneEmptyMonth()
         {
             GivenDatabaseHasData(new List<Budget>
             {
@@ -117,7 +116,7 @@ namespace AccountingPractice
         }
 
         [Fact]
-        public void TwoMonthWithLeapYear()
+        public void TwoMonthsWithLeapYear()
         {
             GivenDatabaseHasData(new List<Budget>
             {
@@ -133,7 +132,7 @@ namespace AccountingPractice
         }
 
         [Fact]
-        public void ThreeMonth()
+        public void ThreeMonths()
         {
             GivenDatabaseHasData(new List<Budget>
             {
@@ -166,7 +165,7 @@ namespace AccountingPractice
         }
 
         [Fact]
-        public void EndBiggerThanStart()
+        public void StartLargerThanEnd()
         {
             GivenDatabaseHasData(new List<Budget>
             {
