@@ -101,6 +101,86 @@ namespace AccountingPractice
                 1);
         }
 
+        [Fact]
+        public void TwoMonthWithOneMonthNoData()
+        {
+            GivenDatabaseHasData(new List<Budget>
+            {
+                new Budget("201901", 31),
+            });
+
+            Accounting = new Accounting(BudgetRepo);
+            TotalAmountShouldBe(
+                new DateTime(2019, 1, 31),
+                new DateTime(2019, 2, 1),
+                1);
+        }
+
+        [Fact]
+        public void TwoMonthWithLeapYear()
+        {
+            GivenDatabaseHasData(new List<Budget>
+            {
+                new Budget("202001", 31),
+                new Budget("202002", 290),
+            });
+
+            Accounting = new Accounting(BudgetRepo);
+            TotalAmountShouldBe(
+                new DateTime(2020, 1, 31),
+                new DateTime(2020, 2, 1),
+                11);
+        }
+
+        [Fact]
+        public void ThreeMonth()
+        {
+            GivenDatabaseHasData(new List<Budget>
+            {
+                new Budget("201901", 31),
+                new Budget("201902", 280),
+                new Budget("201903", 31000),
+            });
+
+            Accounting = new Accounting(BudgetRepo);
+            TotalAmountShouldBe(
+                new DateTime(2019, 1, 31),
+                new DateTime(2019, 3, 1),
+                1281);
+        }
+
+        [Fact]
+        public void CrossYear()
+        {
+            GivenDatabaseHasData(new List<Budget>
+            {
+                new Budget("201812", 31),
+                new Budget("201901", 310),
+            });
+
+            Accounting = new Accounting(BudgetRepo);
+            TotalAmountShouldBe(
+                new DateTime(2018, 12, 31),
+                new DateTime(2019, 1, 2),
+                21);
+        }
+
+        [Fact]
+        public void EndBiggerThanStart()
+        {
+            GivenDatabaseHasData(new List<Budget>
+            {
+                new Budget("201812", 31),
+                new Budget("201901", 310),
+            });
+
+            Accounting = new Accounting(BudgetRepo);
+            TotalAmountShouldBe(
+                new DateTime(2019, 1, 2),
+                new DateTime(2018, 12, 31),
+                0);
+        }
+
         private void TotalAmountShouldBe(DateTime start, DateTime end, double expected)
         {
             Accounting.TotalAmount(start, end).Should().Be(expected);

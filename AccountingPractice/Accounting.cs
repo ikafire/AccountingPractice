@@ -24,32 +24,53 @@ namespace AccountingPractice
 
         private List<MonthlyRate> GetMonthlyRates(DateTime start, DateTime end)
         {
+            var list = new List<MonthlyRate>();
 
-            if (start.Year == end.Year && start.Month == end.Month)
+            var tempStart = start;
+            while (tempStart <= end)
             {
-                var yearMonth = ToYearMonth(start);
-                var rate = GetRate(start, end);
-                return  new List<MonthlyRate>(){new MonthlyRate(){Rate = rate, YearMonth = yearMonth}};
-            }
-            else
-            {
-                var startYearMonth = ToYearMonth(start);
-                var startRate = GetRate(start,
-                    new DateTime(start.Year, start.Month, DateTime.DaysInMonth(start.Year, start.Month)));
-
-                var endYearMonth = ToYearMonth(end);
-                var endRate = GetRate(new DateTime(end.Year, end.Month, 1), end);
-
-                return new List<MonthlyRate>()
+                if (tempStart.ToString("yyyyMM") != end.ToString("yyyyMM"))
                 {
-                    new MonthlyRate() { Rate = startRate, YearMonth = startYearMonth },
-                    new MonthlyRate()
-                    {
-                        Rate = endRate,
-                        YearMonth = endYearMonth,
-                    }
-                };
+                    var tempEnd = new DateTime(tempStart.Year, tempStart.Month,
+                        DateTime.DaysInMonth(tempStart.Year, tempStart.Month));
+                  list.Add(new MonthlyRate(){YearMonth = tempStart.ToString("yyyyMM"), Rate = GetRate(tempStart, tempEnd) });
+                  tempStart = tempEnd.AddDays(1);
+                }
+                else
+                {
+
+                    list.Add(new MonthlyRate() { YearMonth = tempStart.ToString("yyyyMM"), Rate = GetRate(tempStart, end) });
+                    break;
+                }
             }
+
+            return list;
+
+            //if (start.Year == end.Year && start.Month == end.Month)
+            //{
+            //    var yearMonth = ToYearMonth(start);
+            //    var rate = GetRate(start, end);
+            //    return  new List<MonthlyRate>(){new MonthlyRate(){Rate = rate, YearMonth = yearMonth}};
+            //}
+            //else
+            //{
+            //    var startYearMonth = ToYearMonth(start);
+            //    var startRate = GetRate(start,
+            //        new DateTime(start.Year, start.Month, DateTime.DaysInMonth(start.Year, start.Month)));
+
+            //    var endYearMonth = ToYearMonth(end);
+            //    var endRate = GetRate(new DateTime(end.Year, end.Month, 1), end);
+
+            //    return new List<MonthlyRate>()
+            //    {
+            //        new MonthlyRate() { Rate = startRate, YearMonth = startYearMonth },
+            //        new MonthlyRate()
+            //        {
+            //            Rate = endRate,
+            //            YearMonth = endYearMonth,
+            //        }
+            //    };
+            //}
         }
 
         private double CalculateBudget(MonthlyRate monthlyRate, List<Budget> budgets)
