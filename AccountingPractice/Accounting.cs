@@ -25,16 +25,24 @@ namespace AccountingPractice
             var list = new List<MonthlyRate>();
             while (start <= end)
             {
-                if (start.ToString("yyyyMM") != end.ToString("yyyyMM"))
+                if (ToYearMonth(start) != ToYearMonth(end))
                 {
                     var tempEnd = new DateTime(start.Year, start.Month,
                         DateTime.DaysInMonth(start.Year, start.Month));
-                    list.Add(new MonthlyRate() { YearMonth = start.ToString("yyyyMM"), Rate = GetRate(start, tempEnd) });
+                    list.Add(new MonthlyRate()
+                    {
+                        YearMonth = ToYearMonth(start),
+                        Rate = GetRate(start, tempEnd),
+                    });
                     start = tempEnd.AddDays(1);
                 }
                 else
                 {
-                    list.Add(new MonthlyRate() { YearMonth = start.ToString("yyyyMM"), Rate = GetRate(start, end) });
+                    list.Add(new MonthlyRate
+                    {
+                        YearMonth = ToYearMonth(start),
+                        Rate = GetRate(start, end),
+                    });
                     break;
                 }
             }
