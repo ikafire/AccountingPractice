@@ -116,6 +116,38 @@ namespace AccountingPractice
         }
 
         [Fact]
+        public void TwoMonthsWithOneEmptyMonthAndExtraData()
+        {
+            GivenDatabaseHasData(new List<Budget>
+            {
+                new Budget("201901", 31),
+                new Budget("201903", 31),
+            });
+
+            Accounting = new Accounting(BudgetRepo);
+            TotalAmountShouldBe(
+                new DateTime(2019, 1, 31),
+                new DateTime(2019, 2, 1),
+                1);
+        }
+
+        [Fact]
+        public void TwoMonthsWithFirstDay()
+        {
+            GivenDatabaseHasData(new List<Budget>
+            {
+                new Budget("201901", 31),
+                new Budget("201902", 28),
+            });
+
+            Accounting = new Accounting(BudgetRepo);
+            TotalAmountShouldBe(
+                new DateTime(2019, 1, 1),
+                new DateTime(2019, 2, 1),
+                32);
+        }
+
+        [Fact]
         public void TwoMonthsWithLeapYear()
         {
             GivenDatabaseHasData(new List<Budget>
