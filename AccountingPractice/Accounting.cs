@@ -51,14 +51,12 @@ namespace AccountingPractice
         {
             int daysInMonth = DateTime.DaysInMonth(start.Year, start.Month);
             int totalDays = (int) end.Subtract(start).TotalDays + 1;
-            double rate = (double) totalDays / daysInMonth;
-            return rate;
+            return (double) totalDays / daysInMonth;
         }
 
-        private static string ToYearMonth(DateTime start)
+        private static string ToYearMonth(DateTime date)
         {
-            var yearMonth = start.ToString("yyyyMM");
-            return yearMonth;
+            return date.ToString("yyyyMM");
         }
     }
 

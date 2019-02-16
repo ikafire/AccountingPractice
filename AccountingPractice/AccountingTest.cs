@@ -55,7 +55,7 @@ namespace AccountingPractice
         }
 
         [Fact]
-        public void MutilpleDaysInOneMonth()
+        public void MultipleDaysInOneMonth()
         {
             GivenDatabaseHasData(new List<Budget>
             {
