@@ -1,21 +1,19 @@
 using System;
-using System.Collections.Generic;
+using System.Linq;
+using FluentAssertions;
 using Xunit;
 
 namespace AccountingPractice
 {
     public class AccountingTest
     {
-    }
-
-    public interface IBudgetRepo
-    {
-        List<Budget> GetAll();
-    }
-
-    public class Budget
-    {
-        public string YearMonth { get; set; }
-        public int Amount { get; set; }
+        [Fact]
+        public void NoData()
+        {
+            var emptyBudget = new EmptyBudget();
+            var accounting = new Accounting(emptyBudget);
+            var actual = accounting.TotalAmount(new DateTime(2019, 1, 1), new DateTime(2019, 1, 31));
+            actual.Should().Be(0);
+        }
     }
 }
